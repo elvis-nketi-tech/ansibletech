@@ -1,0 +1,649 @@
+# Sun
+# Tues
+# Sat
+# Sun
+
+AWS DevOps Guru:
+Azure DevOps :
+ 
+Platform / Infrastructure:
+	Linux - RedHat, CentOS
+	Windows
+  On-prem
+  Cloud 
+	
+Dev-Ops Foundation
+    SDLC
+	Waterfall
+	Agile
+	Dev-Ops
+Operating Systems:
+   Linux
+      Ubuntu, 
+      CentOS, 
+      RHEL
+   Windows
+   Solaris
+   etc
+SCM:
+   Git/GitHub
+   SVN
+   GitLab
+   BitBucket
+Testing
+   TestNG
+   Selenium
+CodeQuality
+  SonarCube
+  SonarCloud
+Build
+  Maven
+  ANt
+  MSBuild
+Artifacts Repository
+  Nexus
+  JFrog
+Application Servers:
+  Tomcat
+  Wildfly/JBoss
+  
+WebServers/LB  :
+  ELB 
+  Nginx Ingress
+  HAProxy
+  
+ 
+DevOps Tools
+CI/CD  :
+  Jenkins/CloudBees
+  Bamboo
+  CirCle CI
+  Travis CI
+  CruiseControl
+
+    DEV 
+    STAGE/QA / UAT
+    PROD 
+
+CONTAINERISATION   :
+  Docker  - 85%
+  Rocket
+  CoreOS
+  
+CONTAINER ORCHESTRATION    :
+   Docker Swarm
+   Kubernetes
+   OpenShift
+
+Cloud PROVIDERS    :
+   AWS
+   AZURE
+   GCP
+   IBM
+   VMWARE  
+   
+Infrastructure as a code - IaaC   :
+   Terraform
+      AWS :
+      aws configure
+         Access key 
+         Scret Access key
+   CloudFormation 
+
+HELM2 -- TILER
+HELM3
+
+Configuration Management -   :
+Localhost = 1 server ""  :
+    Manually 
+    Automation with bash shell scripting 
+
+Mult-hosts = :
+ Tools
+  Ansible - PUSH -- AGENTLESS
+  Chef
+  Puppet
+  SaltStack
+  
+Servers
+    Users
+    Files
+    Services
+    Packages	
+
+Ansible is an open source CM tool and 
+deployment tool maintained by Redhat
+
+  ipaddress (hostname)
+  username
+  private-key  or password, ssh-key
+
+Host Inventory -- > IT CONTAINS HOSTED SERVER DATIALS (IP or Host name)
+
+   Static Inventory -- > A FILE
+       It is a static file where hosted servers are grouped
+   dynamic Inventory --> It is a script either shell script or python script
+                    use to fetch host details from a cloud provider
+
+
+[localhost]
+#172.31.24.67 ansible_user=ec2-user ansible_ssh_private_key_file=~/k88s.pem
+172.31.24.67 ansible_user=ansible ansible_password=admin
+[k8s]
+#172.31.29.91 ansible_user=ubuntu ansible_ssh_private_key_file=~/k88s.pem
+ 172.31.29.91 ansible_user=ansible ansible_password=admin
+[cicd]
+# 172.31.23.61 ansible_user=ec2-user ansible_ssh_private_key_file=~/k88s.pem
+172.31.23.61 ansible_user=ansible ansible_password=admin
+[appservers]
+#172.31.18.206 ansible_user=ec2-user ansible_ssh_private_key_file=~/k88s.pem
+[dbservers]
+172.31.18.206 ansible_user=ansible ansible_password=admin
+[monitores]
+
+[webservers]
+172.31.7.235 ansible_user=ec2-user ansible_ssh_private_key_file=~/k88s.pem
+
+
+
+
+[appservers]
+172.31.3.144 ansible_user=ec2-user ansible_ssh_private_key_file=~/aws.pem
+#172.31.5.227 ansible_user=ec2-user ansible_ssh_private_key_file=~/aws.pem
+172.31.47.57
+172.31.42.91
+
+[uat]
+172.31.47.57 ansible_user=ansible ansible_password={{password}}
+172.31.42.91 ansible_user=ansible ansible_password=DevOps@2020
+
+[dbservers]
+#172.31.37.112 ansible_user=ansible ansible_password=DevOps@2020
+#172.31.45.203 ansible_user=ansible ansible_password=DevOps@2020
+172.31.45.203 
+172.31.37.112
+#172.31.37.112 ansible_user=ec2-user ansible_ssh_private_key_file=~/aws.pem
+#172.31.45.203 ansible_user=ec2-user ansible_ssh_private_key_file=~/aws.pem
+
+[webservers]
+#172.31.33.26 ansible_user=ansible ansible_password=DevOps@2020
+172.31.33.26
+#172.31.33.26 ansible_user=ec2-user ansible_ssh_private_key_file=~/aws.pem
+
+#[ansible]
+#172.31.15.167 ansible_user=ec2-user ansible_ssh_private_key_file=~/aws.pem
+   
+	   [webservers]
+	   172.31.31.133
+	   
+	    [appsservers]
+	   172.31.31.130
+	   
+	   [dbsservers]
+	   172.31.31.55
+	   
+      Default location /etc/ansible/hosts
+	  
+	  static inventory is recommended for static infrastructure
+   
+   Dynamic Inventory --> it is a script (shell or python)
+       This will search host details dynamically from external sources
+	   AWS, GCP
+
+  ansible all -m ping 
+  
+  -m = ansible modules 
+	   
+Playbooks
+  It's a configuration script written in yml or json. 
+  It contains plays and tasks.
+  those tasks will be executed in the hosts.
+
+
+ansible all -m shell -a "free -m"
+
+ansible all -m shell -a "df -h"
+
+ansible all -m command -a "df -h"
+
+ansible web -m yum -a "name=httpd state=present" -b   (b = privilage escalaiton)
+
+ansible web -m copy -a "src=index.html dest=/var/www/html/index.html" -b 
+
+ansible web -m service -a "name=httpd state=stated" -b
+
+- hosts: web
+  become: true
+  tasks: 
+    - name: install apache
+      yum: 
+        name: httpd 
+        state: latest
+    - name: Insert Index page
+      copy:
+        src: index.html 
+        dest: /var/www/html/index.html
+    - name: Start apache
+      service: 
+        name: httpd 
+        state: stated
+      
+ ansible-playbook    
+
+ansible-playbook sql -b 
+
+ansible-doc -l 
+
+Components  : 
+
+Ansible commands :
+    ansible <groupName> -m <moduleName> 
+    ansible web -m yum 
+module=yum/apt/package: 
+    name=apache
+    state=present, latest, absent  
+    
+module=service/systemd:
+    name=apache
+    state=started, stopped, restarted 
+
+playbooks 
+
+Modules
+
+  Core modules
+  
+  custom modules
+
+Connections Plugins
+   SSH
+        ssh-keygen
+        ssh-copy-id ansible@172.31.18.206
+        
+        172.31.24.67
+        172.31.29.91
+        172.31.23.61
+        172.31.7.235
+        
+   WINRM
+   
+ 
+ Roles
+
+playbook
+---
+- hosts: dbservers
+  tasks:
+  - name: install mysql
+    yum:
+	state: present
+  - name: start mysql
+    service:
+	state: started
+    
+IQ: Can we install ansible in windows OS? NO
+    Can we configure windows systems using ansible? YES
+
+
+Ansible installation in ubuntu
+ sudo adduser ansible
+ echo "ansible  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ansible
+ sudo su - ansible
+ sudo apt-add-repository ppa:ansible/ansible  
+ sudo apt install ansible  -y 
+ 
+
+
+Playbooks:
+  hosts
+  vars
+  tasks
+  handlers
+  modules
+  tags
+  loops
+  conditions
+  
+modules:
+   
+variables
+vault
+
+roles
+Dynamic Inventory
+Automation
+
+Ansible Tower
+# Install packages
+- hosts: localhost
+  become: true
+  tasks: 
+    - name: install git
+      yum: 
+        name: git 
+        state: latest
+    - name: install wget
+      yum: 
+        name: wget 
+        state: latest
+    - name: install unzip
+      yum: 
+        name: unzip 
+        state: latest
+
+
+# Loops
+# In python variables are referred  using "{{}}"
+- hosts: localhost
+  become: yes
+  tasks:
+   - name: Install Packages
+     yum: 
+      name: "{{items}}" 
+      update_cache: yes
+      state: latest
+	 with_items:
+	 - git
+	 - nano
+	 - wget
+	 - unzip
+	  
+- hosts: dbservers
+  become: yes
+  tasks:
+   - name: Install Packages
+     yum: 
+      name: ['unzip', 'git', 'nano', 'wget'] 
+      update_cache: yes
+      state: latest	  
+	 when: ansible_os_family == "RedHat"
+	 ignore_errors: true
+	 ansible_distribution" == "RedHat"
+
+
+# conditions == when
+ignore_errors: true
+
+ansible_os_family == "RedHat"
+
+ansible_os_family == "RedHat"
+
+ansible dbservers -m setup
+
+ansible-playbook apache.yml  --syntax-check
+what is dry run in ansible?
+ansible-playbook apache.yml  --check  # dry run
+ansible-playbook apache.yml  --step
+ansible-playbook apache.yml  --list-hosts
+
+what is verbose mode and dry run in ansible?
+What is verbose mode in ansible? -v -vv -vvv
+ansible-playbook apache.yml -v 
+
+ mkdi ansible -v 
+ 
+How can we skip or execute specfic tasks IN ANSIBLE from a playbook? 
+    By using TAGS
+    ansible-playbook apache.yml  --list-tags
+
+   /etc/ansible/hosts
+   
+# using tags in ansible  
+- hosts: db
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install apache webserver
+      dnf: name=httpd state=latest
+      tags:
+      - install
+    - name: start apache webserver
+      service: name=httpd state=started
+      tags:
+      - start
+    - name: copy file to index.html
+      #copy: src=/home/ansible/an/index.html dest=/var/www/html/index.html
+      copy: 
+        src: /home/ansible/an/index.html 
+        dest: /var/www/html/index.html
+      tags:
+      - copy
+    - name: debug
+      debug:
+        msg: "from LandmarkTechnology"
+      tags:
+      - echo
+      - echos 
+    - name: restarted
+      service: name=httpd state=restarted
+    - name: create a files
+      shell: echo "Jesus is Lord" > db.py
+# handler.yml
+- hosts: db
+  become: true
+  tasks:
+     - name:
+     - name:
+     - name:  
+  handlers: 
+     - name:
+     - name: 
+
+ansible-playbook apache.yml  --skip-tags 'install,start'
+ansible-playbook apache.yml --tags 'install'
+ansible-playbook apache.yml --tags 'copy'
+
+ansible all -m setup
+
+ansible localhost -m apt -a 'name=git state=present' -b
+
+
+What is the difference between tasks and handlers?
+Tasks will be executed by default from top to bottom.
+Some tasks has to notify handlers. Handler will be executed only if the tasks changes.
+Difference b/w copy and template module.
+Which module does gather_facts uses? setup
+We can refer variables in ansible-playbook and python using this ginger template -- {{}}  
+
+
+
+
+
+LandmarkTechnology
+ANSIBLE and python Variables. {{}}
+  1. runtime vars
+        --> designed at run-time
+  2. playbook vars
+        --> The scope of the variable is within the playbook
+            and designed in the playbook
+  3. host_vars  webservers.yml 
+        --> The scope of the variable is host-defined
+  4. group_vars specific  webservers.yml
+        --> The scope of the variable is host-defined
+  5. group_vars general  -- all.yml
+        --> The scope of the variable is global
+            Available to servers within the group
+
+
+e.g
+- hosts: dbservers
+  vars:
+    system_pwd: landmark2020
+  tasks:
+  - name: variable demo
+    debug:
+      msg: "{{system_pwd}}"
+- hosts: dbservers
+  tasks:
+  - name: variable demo
+    debug:
+      msg: "{{system_pwd}}"
+	  
+	  
+ansible-playbook var.yml  --extra-vars "pwd=test"
+
+sudo mkdir /etc/ansible/group_vars/
+sudo vi /etc/ansible/group_vars/all.yml
+sudo vi /etc/ansible/group_vars/dbservers.yml
+sudo mkdir /etc/ansible/host_vars/
+sudo vi /etc/ansible/host_vars/dbservers.yml
+
+conditions:
+    with_items
+    ansible_os_family
+    
+yum
+apt
+package
+configuring servers in Private subnets:
+    NAT gateway
+    get_url:
+        src:
+        dest:
+Loops:
+
+ANSIBLE VAULT. 
+
+   It is use to create secrets in ansible.
+
+ansible-vault create  /etc/ansible/group_vars/all.yml
+ansible-vault encrypt /etc/ansible/group_vars/all.yml
+ansible-vault decrypt /etc/ansible/group_vars/all.yml
+ansible-vault view /etc/ansible/group_vars/all.yml
+ansible-vault edit /etc/ansible/group_vars/all.yml
+ansible-vault rekey /etc/ansible/group_vars/all.yml
+
+sudo ansible uat -m ping --ask-vault-pass
+sudo vi $HOME/vaultpass
+sudo ansible uat -m ping --vault-password=vaultpass
+sudo ansible web -m ping --vault-password=~/vaultpass
+
+
+Ansible role --> 
+  It's is a set of tasks, handlers, variables, files and other 
+  components organised in a predefined structure to configured specific 
+  requirements. It is easy to understand, maintained and shared.
+  Roles are used in ansible-playbooks
+
+- hosts: all
+  become: yes
+  roles:
+   - httpd
+
+<RoleName>
+ default
+   main.yml
+ files 
+ 
+ tasks
+   main.yml
+   
+ handlers
+   main.yml
+   
+ template
+ 
+ vars
+   main.yml
+ 
+ tests
+
+ metadata
+   main.yml
+
+- hosts: appservers
+  become: true
+  roles:
+  - httpd
+  - sonarqube
+  - tomcat
+  
+  
+
+# We define variables in vars/main.yml or default/main.yml
+# If we defined in both vars/main.yml will be used
+Metadata: These are comments. Information about the role.
+   # what it does and on which  OS it will works.
+   # Author LandmarkTechnology
+   # OS RedHat
+# If I'm trying to copy some files/scripts(shell, xml, html into the hosts
+  such files will be maintained in either the files or template dir.
+  
+# test is used to execute the role and observe if it works properly 
+  before running the actual role playbook. 
+  
+# Which file will I modify if I want to change or add a tasks?
+
+ for smaller tasks playbooks are recommended
+
+- hosts: webservers
+  var:
+    name: LandmarkTechnology
+  become: true
+  handlers
+  tasks:
+    - name: Install apache webserver
+      dnf: name=httpd state=latest
+      tags:
+      - install
+	  notify:
+	  - start apache webserver
+  handlers:
+    - name: start apache webserver
+      service: name=httpd state=started
+      tags:
+      - start
+
+    - name: copy file to index.html
+      copy: src=/home/ansible/index.html dest=/var/www/html/index.html
+      tags:
+      - copy
+	  notify:
+	  - restart apache
+    - name: display content
+      degub:
+        msg: from LandmarkTechnology
+
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+
+
+ansible-galaxy <RoleName>
+
+ansible-galaxy init <RoleName>  # will create a role in ansible
+ansible-galaxy <PlaybookName>
+
+ansible-playbook -i hosts site.yml
+
+ansible-playbook localhost httpd/test/test.yml
+ansible-playbook site.yml --ask-vault-pass
+ for smaller tasks playbooks are recommended
+ if you have complex requirments use roles
+ 
+ == Infrastructure provisioning ==
+ 
+ == How do you spin up your infrastructure/servers?
+
+
+AWS 
+
+ec2.py
+
+ec2.ini
+
+DynamicInventory
+
+python
+SDK 
+  boto
+  boto3
+  ec2.py which uses ec2.ini
+awscli
+GUI
+terraform
+api
+
+ansible-playbook -i host  -u ubuntu --private-key=mykey.pem  --ssh-common-args='-o StrictHostKeyChecking=no'
+   
+ansible-playbook -i DynamicInventory.py site.yml -u ubuntu --private-key=ca21.pem  --ssh-common-args='-o StrictHostKeyChecking=no'   

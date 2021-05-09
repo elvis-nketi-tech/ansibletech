@@ -1,0 +1,15 @@
+[apps]
+ 172.31.30.94  ansible_user=ubuntu ansible_ssh_private_key_file=key
+ 172.31.18.173 ansible_user=ubuntu ansible_ssh_private_key_file=key
+ 172.31.29.58  ansible_user=ubuntu ansible_ssh_private_key_file=key
+ [web]
+  172.31.26.41  ansible_user=ubuntu ansible_ssh_private_key_file=key
+  172.31.19.153 ansible_user=ubuntu ansible_ssh_private_key_file=key
+  172.31.21.71  ansible_user=ubuntu ansible_ssh_private_key_file=key
+  172.31.23.71  ansible_user=ubuntu ansible_ssh_private_key_file=key
+ [dbs]
+    172.31.29.70 ansible_user=ubuntu ansible_ssh_private_key_file=key
+    172.31.30.133 ansible_user=ubuntu ansible_ssh_private_key_file=key
+    172.31.31.113 ansible_user=ubuntu ansible_ssh_private_key_file=key
+    172.31.23.50 ansible_user=ubuntu ansible_ssh_private_key_file=key
+
